@@ -17,24 +17,29 @@ function App() {
 
   //handleSubmit
   const handleSubmit = (event) => {
-    event.preventDefault();
-    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&maxResults=40&startIndex=10`)
-      .then(data => {
-        console.log(data.data.items);
-        setResult(data.data.items);
-      })
-    console.log(book);
+    if(book){
+      event.preventDefault();
+      axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&maxResults=40&startIndex=10`)
+        .then(data => {
+          console.log(data.data.items);
+          setResult(data.data.items);
+        })
+      console.log(book);
+    } else {
+      alert('Insert book title')
+    }
+
   };
 
   const mainContent = () => {
     return (
       <div className='container'>
-        <h1>Bookipedia</h1>
+        <h1 className='display-2 text-center mb-3 justify-content-center align-items-center flex-column'>Bookipedia</h1>
         <form onSubmit={handleSubmit}>
           <div className='form-group'>
             <input type="text" className='form-control mt-10' placeholder='Search for books' autoComplete="off" onChange={handleChange} />
           </div>
-          <button className='btn btn-danger' type='submit'>Search</button>
+          <button className='btn btn-danger justify-content-center' type='submit'>Search</button>
         </form>
       </div>
     )
@@ -48,10 +53,15 @@ function App() {
       }
       return (
         <div className="card" style={{width: '18rem'}}>
-          <img src={thumbnail} className="card-img-top" alt=''/>
+          <img src={thumbnail} className="card-img-top" alt={item.volumeInfo.title} style={{width: '100%', height: '250px'}}/>
           <div className ="card-body">
           <h5 className ="card-title">{item.volumeInfo.title}</h5>
-          <p className ="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <p className ="card-text">{item.volumeInfo.subtitle}</p>
+          <ul>
+            <li>pageCount: </li>
+            <li>language: </li>
+            <li>authors: </li>
+          </ul>
           <a href={item.volumeInfo.infoLink} className ="btn btn-primary" target='_blank' rel="noreferrer">More info</a>
           </div>
         </div>
