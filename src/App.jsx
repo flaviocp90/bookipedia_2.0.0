@@ -93,9 +93,9 @@ function App() {
               <h5 className="card-title">{item.volumeInfo.title}</h5>
               <p className="card-text">{item.volumeInfo.subtitle}</p>
               <ul>
-                <li>pageCount: {item.volumeInfo.pageCount}</li>
-                <li>language: {item.volumeInfo.language}</li>
-                <li>authors: {item.volumeInfo.authors}</li>
+                <li>Page Count: {item.volumeInfo.pageCount}</li>
+                <li>Language: {item.volumeInfo.language}</li>
+                <li>Authors: {item.volumeInfo.authors}</li>
               </ul>
               <a
                 href={item.volumeInfo.infoLink}
