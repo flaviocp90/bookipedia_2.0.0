@@ -1,3 +1,22 @@
 .card {
     margin: 20px;
 } 
+
+.btn {
+    display: flex;
+    align-content: center;
+}
+
+.form-control {
+    margin-bottom: 100px;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+#max-result {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+

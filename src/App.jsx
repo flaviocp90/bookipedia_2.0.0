@@ -8,42 +8,71 @@ function App() {
   //states
   const [book, setBooks] = useState("");
   const [result, setResult] = useState([]);
+  const [maxResults, setMaxResults] = useState(1);
 
-  //handleChange
+  //handleChangeSearch
   const handleChange = (event) => {
     const book = event.target.value;
     setBooks(book);
   };
 
+  //handleChangeSearchInput
+  const handleChangeInput = (event) => {
+    const maxResults = event.target.value;
+    setMaxResults(maxResults)
+  }
+
   //handleSubmit
   const handleSubmit = (event) => {
-    if(book){
-      event.preventDefault();
-      axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&maxResults=40&startIndex=10`)
-        .then(data => {
-          console.log(data.data.items);
-          setResult(data.data.items);
-        })
-      console.log(book);
+    if(maxResults) {
+      if(book){
+        event.preventDefault();
+        axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book}&maxResults=${maxResults}`)
+          .then(data => {
+            setResult(data.data.items);
+          })
+        console.log(book);
+      } else {
+        alert('Insert book title')
+      }
     } else {
-      alert('Insert book title')
+      alert('Insert max number of items')
+    };
     }
 
-  };
 
   const mainContent = () => {
     return (
-      <div className='container'>
-        <h1 className='display-2 text-center mb-3 justify-content-center align-items-center flex-column'>Bookipedia</h1>
+      <div className="container">
+        <h1 className="display-2 text-center mb-3 justify-content-center align-items-center flex-column">
+          Bookipedia
+        </h1>
         <form onSubmit={handleSubmit}>
-          <div className='form-group'>
-            <input type="text" className='form-control mt-10' placeholder='Search for books' autoComplete="off" onChange={handleChange} />
+          <div className="form-group">
+            <input
+              type="text"
+              className="form-control mt-10"
+              placeholder="Search for books"
+              autoComplete="off"
+              onChange={handleChange}
+            />
           </div>
-          <button className='btn btn-danger justify-content-center' type='submit'>Search</button>
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-primary" type="submit">
+              Search
+            </button>
+            <input
+              type="number"
+              placeholder="Max Results"
+              id="max-result"
+              value={maxResults}
+              onChange={handleChangeInput}
+            />
+          </div>
         </form>
       </div>
-    )
-  }
+    );
+  };
 
   const handleCards = () => {
     const items = result.map((item, i) => {
@@ -52,17 +81,31 @@ function App() {
         thumbnail = item.volumeInfo.imageLinks.thumbnail;
       }
       return (
-        <div className="card" style={{width: '18rem'}}>
-          <img src={thumbnail} className="card-img-top" alt={item.volumeInfo.title} style={{width: '100%', height: '250px'}}/>
-          <div className ="card-body">
-          <h5 className ="card-title">{item.volumeInfo.title}</h5>
-          <p className ="card-text">{item.volumeInfo.subtitle}</p>
-          <ul>
-            <li>pageCount: </li>
-            <li>language: </li>
-            <li>authors: </li>
-          </ul>
-          <a href={item.volumeInfo.infoLink} className ="btn btn-primary" target='_blank' rel="noreferrer">More info</a>
+        <div className='col'>
+          <div className="card" style={{ width: "18rem" }}>
+            <img
+              src={thumbnail}
+              className="card-img-top"
+              alt={item.volumeInfo.title}
+              style={{ width: "100%", height: "250px" }}
+            />
+            <div className="card-body">
+              <h5 className="card-title">{item.volumeInfo.title}</h5>
+              <p className="card-text">{item.volumeInfo.subtitle}</p>
+              <ul>
+                <li>pageCount: {item.volumeInfo.pageCount}</li>
+                <li>language: {item.volumeInfo.language}</li>
+                <li>authors: {item.volumeInfo.authors}</li>
+              </ul>
+              <a
+                href={item.volumeInfo.infoLink}
+                className="btn btn-primary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                More info
+              </a>
+            </div>
           </div>
         </div>
       );
@@ -73,11 +116,6 @@ function App() {
       </div>
     )
   }
-
-
-
-
-
 
   return (
     <div className='w-100 h-100'>
